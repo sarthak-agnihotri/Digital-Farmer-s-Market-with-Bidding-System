@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('category')->index();
+            $table->decimal('price', 10, 2)->default(0);
+            $table->unsignedInteger('quantity');
+            $table->boolean('is_bidding')->default(false);
+            $table->decimal('buy_now_price', 10, 2)->nullable();
+            $table->timestamp('bidding_end_time')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
