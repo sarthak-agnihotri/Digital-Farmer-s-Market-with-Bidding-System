@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Bid;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -46,4 +47,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isFarmer() {
+    return $this->role === 'farmer';
+}
+
+public function isConsumer() {
+    return $this->role === 'consumer';
+}
+
+public function isAdmin() {
+    return $this->role === 'admin';
+}
+public function bids()
+{
+    return $this->hasMany(Bid::class);
+}
 }
