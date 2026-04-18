@@ -1,36 +1,59 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmer Market</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Tailwind -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-gray-100">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Navbar -->
+    <nav class="bg-gray-800 text-white p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+        <h1 class="text-lg font-bold">Farmer Market</h1>
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+        <div class="flex items-center gap-3 flex-wrap">
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+    <!-- Public -->
+    <a href="{{ route('products.index') }}" class="bg-gray-700 px-3 py-1 rounded">Products</a>
+
+    @auth
+
+        {{-- Consumer --}}
+        @if(auth()->user()->isConsumer())
+            <a href="{{ route('consumer.dashboard') }}" class="bg-green-500 px-3 py-1 rounded">Dashboard</a>
+            <a href="{{ route('consumer.bids') }}" class="bg-purple-500 px-3 py-1 rounded">My Bids</a>
+        @endif
+
+        {{-- Farmer --}}
+        @if(auth()->user()->isFarmer())
+            <a href="{{ route('products.create') }}" class="bg-yellow-500 px-3 py-1 rounded">Add Product</a>
+        @endif
+
+        {{-- Admin --}}
+        @if(auth()->user()->isAdmin())
+            <a href="{{ route('admin.products') }}" class="bg-blue-500 px-3 py-1 rounded">Admin Panel</a>
+        @endif
+
+        {{-- Logout --}}
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button class="bg-red-500 px-3 py-1 rounded">Logout</button>
+        </form>
+
+    @endauth
+
+</div>
+    </div>
+</nav>
+
+    <!-- 🔥 THIS IS IMPORTANT -->
+    <main class="p-6">
+        @yield('content')
+    </main>
+
+</body>
 </html>

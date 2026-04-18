@@ -40,4 +40,14 @@ public function store(Request $request)
 
     return back()->with('success', 'Bid placed successfully!');
 }
+
+public function myBids()
+{
+    $bids = \App\Models\Bid::with('product')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+    return view('consumer.bids', compact('bids'));
+}
 }

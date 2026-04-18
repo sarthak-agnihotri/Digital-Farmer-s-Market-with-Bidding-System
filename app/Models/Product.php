@@ -16,7 +16,8 @@ class Product extends Model
         'is_bidding',
         'buy_now_price',
         'bidding_end_time',
-        'status'
+        'status',
+        'image',
     ];
     public function bids()
     {
