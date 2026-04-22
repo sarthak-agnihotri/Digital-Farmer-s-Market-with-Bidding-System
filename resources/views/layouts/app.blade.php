@@ -7,51 +7,79 @@
     <!-- Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
 
-    <!-- Navbar -->
-    <nav class="bg-gray-800 text-white p-4">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
+<body class="bg-gradient-to-br from-green-100 via-emerald-200 to-lime-100 min-h-screen">
 
-        <h1 class="text-lg font-bold">Farmer Market</h1>
+    <!-- 🌾 NAVBAR -->
+    <nav class="bg-white/30 backdrop-blur-xl border border-white/20 shadow-lg sticky top-4 mx-4 rounded-2xl z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Logo -->
+            <h1 class="text-2xl font-bold text-green-600 tracking-wide">
+                🌾 Farmer Market
+            </h1>
 
-    <!-- Public -->
-    <a href="{{ route('products.index') }}" class="bg-gray-700 px-3 py-1 rounded">Products</a>
+            <!-- Menu -->
+            <div class="flex items-center gap-3 flex-wrap">
 
-    @auth
+                <!-- Public -->
+                <a href="{{ route('products.index') }}"
+                   class="text-gray-600 hover:text-green-600 font-medium transition">
+                   Products
+                </a>
 
-        {{-- Consumer --}}
-        @if(auth()->user()->isConsumer())
-            <a href="{{ route('consumer.dashboard') }}" class="bg-green-500 px-3 py-1 rounded">Dashboard</a>
-            <a href="{{ route('consumer.bids') }}" class="bg-purple-500 px-3 py-1 rounded">My Bids</a>
-        @endif
+                @auth
 
-        {{-- Farmer --}}
-        @if(auth()->user()->isFarmer())
-            <a href="{{ route('products.create') }}" class="bg-yellow-500 px-3 py-1 rounded">Add Product</a>
-        @endif
+                    {{-- 👤 USER NAME --}}
+                    <span class="text-gray-500 hidden md:block">
+                        Hi, {{ auth()->user()->name }}
+                    </span>
 
-        {{-- Admin --}}
-        @if(auth()->user()->isAdmin())
-            <a href="{{ route('admin.products') }}" class="bg-blue-500 px-3 py-1 rounded">Admin Panel</a>
-        @endif
+                    {{-- Consumer --}}
+                    @if(auth()->user()->isConsumer())
+                        <a href="{{ route('consumer.dashboard') }}"
+                           class="px-4 py-2 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition transform hover:scale-105">
+                           Dashboard
+                        </a>
 
-        {{-- Logout --}}
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="bg-red-500 px-3 py-1 rounded">Logout</button>
-        </form>
+                        <a href="{{ route('consumer.bids') }}"
+                           class="px-4 py-2 rounded-lg bg-purple-100 text-purple-600 hover:bg-purple-200 transition transform hover:scale-105">
+                           My Bids
+                        </a>
+                    @endif
 
-    @endauth
+                    {{-- Farmer --}}
+                    @if(auth()->user()->isFarmer())
+                        <a href="{{ route('products.create') }}"
+                           class="px-4 py-2 rounded-lg bg-green-500 text-white shadow hover:bg-green-600 transition transform hover:scale-105">
+                           + Add Product
+                        </a>
+                    @endif
 
-</div>
-    </div>
-</nav>
+                    {{-- Admin --}}
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="px-4 py-2 rounded-lg bg-blue-500 text-white shadow hover:bg-blue-600 transition transform hover:scale-105">
+                           Admin Panel
+                        </a>
+                    @endif
 
-    <!-- 🔥 THIS IS IMPORTANT -->
-    <main class="p-6">
+                    {{-- Logout --}}
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition transform hover:scale-105">
+                            Logout
+                        </button>
+                    </form>
+
+                @endauth
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🌟 MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
         @yield('content')
     </main>
 

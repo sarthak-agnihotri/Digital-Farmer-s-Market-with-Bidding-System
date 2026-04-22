@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Order;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -21,12 +23,35 @@ class AdminController extends Controller
         });
     }
 
-   public function index()
+ public function index(Request $request)
 {
-    // show only pending products
-    $products = Product::where('status', 'pending')->latest()->get();
+    $query = Product::with('user');
 
-    return view('admin.products', compact('products'));
+    // Filters
+    if ($request->status) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->search) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    // Pagination
+    $products = $query->latest()->paginate(6);
+
+    // ✅ STATS
+    $totalProducts = Product::count();
+    $pendingCount = Product::where('status', 'pending')->count();
+    $approvedCount = Product::where('status', 'approved')->count();
+    $rejectedCount = Product::where('status', 'rejected')->count();
+
+    return view('admin.products', compact(
+        'products',
+        'totalProducts',
+        'pendingCount',
+        'approvedCount',
+        'rejectedCount'
+    ));
 }
 
     public function approve($id)
@@ -43,6 +68,27 @@ class AdminController extends Controller
     $product->status = 'rejected';
     $product->save();
 
-    return back()->with('success', 'Product rejected!');
+    return response()->json(['success' => true]);
+}
+public function dashboard()
+{
+    // 💰 Total Revenue
+    $totalRevenue = Order::sum('total_price');
+
+    // 📦 Total Orders
+    $totalOrders = Order::count();
+
+    // 📊 Revenue for LAST 7 DAYS (Correct Logic ✅)
+    $revenueData = Order::selectRaw('DATE(created_at) as date, SUM(total_price) as total')
+        ->where('created_at', '>=', now()->subDays(7)) // ✅ FIXED
+        ->groupBy('date')
+        ->orderBy('date', 'ASC')
+        ->get();
+
+    return view('admin.dashboard', compact(
+        'totalRevenue',
+        'totalOrders',
+        'revenueData'
+    ));
 }
 }
