@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\GettingStartedController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,7 +24,11 @@ Route::get('/dashboard', function () {
 
 
 // ✅ Auth Protected Routes
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.getting.started'])->group(function () {
+
+    // Getting Started Routes
+    Route::get('/getting-started', [GettingStartedController::class, 'index'])->name('getting-started');
+    Route::post('/getting-started/complete', [GettingStartedController::class, 'complete'])->name('getting-started.complete');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

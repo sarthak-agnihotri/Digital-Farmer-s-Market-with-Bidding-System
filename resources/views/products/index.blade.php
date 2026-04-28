@@ -71,117 +71,149 @@
 
     @forelse($products as $product)
 
-    <div class="relative bg-white/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02] transition duration-300 overflow-hidden flex flex-col h-full">
+    <div class="relative bg-white/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02] transition duration-300 overflow-hidden flex flex-col h-full group">
 
         <!-- ✨ Glow -->
         <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
 
+        <!-- Status Badge -->
+        @if($product->bidding_end_time)
+            <div class="absolute top-4 right-4 z-10">
+                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full shadow-lg
+                    {{ now()->greaterThan($product->bidding_end_time) ? 'bg-red-500/90 text-white' : 'bg-green-500/90 text-white' }}">
+                    {{ now()->greaterThan($product->bidding_end_time) ? '🏁 Closed' : '🔥 Open' }}
+                </span>
+            </div>
+        @endif
+
         <!-- 🖼 IMAGE -->
-        <div class="h-48 bg-white/20 flex items-center justify-center overflow-hidden">
-    @if($product->image)
-        <img src="{{ asset('storage/'.$product->image) }}"
-             class="h-full w-full object-cover transition duration-300 hover:scale-105">
-    @else
-        <span class="text-gray-400">No Image</span>
-    @endif
-</div>
+        <div class="h-48 bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center overflow-hidden relative">
+            @if($product->image)
+                <img src="{{ asset('storage/'.$product->image) }}"
+                     class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-300"></div>
+            @else
+                <div class="text-center">
+                    <span class="text-6xl mb-2 block">🥕</span>
+                    <span class="text-gray-400 text-sm">No Image</span>
+                </div>
+            @endif
+        </div>
 
         <!-- 📄 CONTENT -->
-        <div class="p-4 flex flex-col flex-grow">
+        <div class="p-6 flex flex-col flex-grow">
 
-            <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
+            <!-- Product Info -->
+            <div class="mb-4">
+                <h3 class="text-xl font-bold text-gray-800 mb-1">{{ $product->name }}</h3>
+                <p class="text-sm text-gray-600 mb-2">{{ $product->category }}</p>
 
-            <p class="text-sm text-gray-600">{{ $product->category }}</p>
+                <div class="flex items-center justify-between">
+                    <div class="text-2xl font-bold text-green-600">
+                        ₹{{ $product->price }}
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        Qty: {{ $product->quantity }}
+                    </div>
+                </div>
+            </div>
 
-            <p class="text-green-700 font-bold mt-1">
-                ₹{{ $product->price }}
-            </p>
+            <!-- Bidding Info -->
+            @if($product->is_bidding)
+                <div class="bg-blue-50/50 backdrop-blur rounded-lg p-4 mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-blue-800">Highest Bid:</span>
+                        <span class="font-bold text-blue-600">
+                            ₹{{ $product->bids->max('bid_amount') ?? $product->price }}
+                        </span>
+                    </div>
 
-            <p class="text-sm text-gray-700">
-                Qty: {{ $product->quantity }}
-            </p>
-
-            <!-- STATUS -->
-            @if($product->bidding_end_time)
-                <span class="inline-block mt-2 px-3 py-1 text-xs rounded-full
-                    {{ now()->greaterThan($product->bidding_end_time) ? 'bg-red-300/40 text-red-800' : 'bg-green-300/40 text-green-800' }}">
-                    {{ now()->greaterThan($product->bidding_end_time) ? 'Closed' : 'Open' }}
-                </span>
+                    @if($product->bidding_end_time)
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-blue-700">⏳ Time Left:</span>
+                            <span id="timer-{{ $product->id }}" class="font-mono text-blue-600"></span>
+                        </div>
+                    @endif
+                </div>
             @endif
 
-            <!-- TIMER -->
-            @if($product->bidding_end_time)
-                <p class="text-sm mt-1 text-blue-600">
-                    ⏳ <span id="timer-{{ $product->id }}"></span>
-                </p>
-            @endif
-
-            <!-- BID -->
-            <p class="text-sm mt-2">
-                Highest Bid:
-                <span class="font-semibold">
-                    {{ $product->bids->max('bid_amount') ?? 'No bids yet' }}
-                </span>
-            </p>
-
-            <!-- WINNER -->
+            <!-- Winner Announcement -->
             @php
                 $highestBid = $product->bids->sortByDesc('bid_amount')->first();
             @endphp
 
             @if($product->bidding_end_time && now()->greaterThan($product->bidding_end_time))
-                <p class="mt-2 inline-block bg-green-400/30 backdrop-blur text-green-900 px-3 py-1 rounded-full text-xs font-semibold border border-green-300/40">
-                    🏆 Winner: {{ $highestBid && $highestBid->user ? $highestBid->user->name : 'No bids' }}
-                </p>
+                <div class="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-lg p-3 mb-4">
+                    <div class="flex items-center text-green-800">
+                        <span class="text-lg mr-2">🏆</span>
+                        <div>
+                            <div class="font-semibold text-sm">Auction Ended</div>
+                            <div class="text-xs">
+                                Winner: {{ $highestBid && $highestBid->user ? $highestBid->user->name : 'No bids' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
 
             <!-- ACTIONS -->
-            <div class="mt-auto pt-4 space-y-2">
+            <div class="mt-auto space-y-3">
 
-                <!-- ACTIONS -->
+                <!-- View Details -->
+                <a href="{{ route('products.show', $product->id) }}"
+                   class="block text-center bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition shadow-lg font-medium">
+                    👁️ View Details
+                </a>
 
-<div class="mt-auto pt-4 space-y-2">
+                <!-- Buy Now (for consumers) -->
+                @auth
+                    @if(auth()->user()->isConsumer())
+                        <form method="POST" action="{{ route('orders.store') }}" class="mb-3">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-xl hover:from-orange-600 hover:to-orange-700 transition shadow-lg font-medium">
+                                🛒 Buy Now - ₹{{ $product->price }}
+                            </button>
+                        </form>
+                    @endif
+                @endauth
 
-<!-- View Details -->
-<a href="{{ route('products.show', $product->id) }}"
-   class="block text-center bg-blue-500/80 backdrop-blur text-white py-2 rounded-lg hover:bg-blue-600/80 transition shadow-md">
-    View Details
-</a>
+                <!-- Bidding Form -->
+                @if($product->is_bidding && (!$product->bidding_end_time || now()->lessThan($product->bidding_end_time)))
+                    @auth
+                        @if(auth()->user()->isConsumer())
+                            <form method="POST" action="{{ route('bids.store') }}" class="space-y-2">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-<!-- 🛒 BUY NOW (NEW) -->
-@auth
-    @if(auth()->user()->isConsumer())
-        <form method="POST" action="{{ route('orders.store') }}">
-            @csrf
-            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <div class="flex gap-2">
+                                    <div class="flex-1">
+                                        <input type="number"
+                                               name="bid_amount"
+                                               class="w-full bg-white/60 backdrop-blur border border-white/40 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none"
+                                               placeholder="Enter bid amount"
+                                               min="{{ ($product->bids->max('bid_amount') ?? $product->price) + 1 }}"
+                                               required>
+                                    </div>
+                                    <button class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition shadow-lg font-medium whitespace-nowrap">
+                                        💰 Bid
+                                    </button>
+                                </div>
 
-            <button class="w-full bg-orange-500/80 backdrop-blur text-white py-2 rounded-lg hover:bg-orange-600/80 transition shadow-md">
-                🛒 Buy Now
-            </button>
-        </form>
-    @endif
-@endauth
-
-<!-- BIDDING -->
-@if($product->is_bidding && (!$product->bidding_end_time || now()->lessThan($product->bidding_end_time)))
-    <form method="POST" action="{{ route('bids.store') }}">
-        @csrf
-        <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-        <div class="flex gap-2 mt-2">
-            <input type="number" name="bid_amount"
-                class="flex-1 bg-white/40 backdrop-blur border border-white/40 rounded-lg px-3 py-2"
-                placeholder="Enter bid" required>
-
-            <button class="bg-green-500/80 backdrop-blur text-white px-4 rounded-lg hover:bg-green-600/80">
-                Bid
-            </button>
-        </div>
-    </form>
-@endif
-
-</div>
-
+                                <div class="text-xs text-gray-600 text-center">
+                                    Minimum bid: ₹{{ ($product->bids->max('bid_amount') ?? $product->price) + 1 }}
+                                </div>
+                            </form>
+                        @endif
+                    @else
+                        <div class="text-center py-2">
+                            <a href="{{ route('login') }}"
+                               class="text-green-600 hover:text-green-700 text-sm font-medium">
+                                Sign in to bid →
+                            </a>
+                        </div>
+                    @endauth
+                @endif
 
             </div>
 

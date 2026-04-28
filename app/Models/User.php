@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'getting_started_completed',
     ];
 
     /**
@@ -58,6 +59,10 @@ public function isConsumer() {
 
 public function isAdmin() {
     return $this->role === 'admin';
+}
+
+public function hasCompletedGettingStarted() {
+    return $this->getting_started_completed;
 }
 public function bids()
 {
