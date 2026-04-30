@@ -104,9 +104,14 @@
                 </p>
 
                 <!-- Actions -->
-                <div class="flex justify-between mt-4">
-                    <a href="#" class="text-blue-500 hover:underline text-sm">Edit</a>
-                    <a href="#" class="text-red-500 hover:underline text-sm">Delete</a>
+                <div class="flex justify-between mt-4 items-center gap-2">
+                    <a href="{{ route('products.edit', $product->id) }}" class="text-blue-500 hover:underline text-sm font-medium">Edit</a>
+                    
+                    <form method="POST" action="{{ route('products.destroy', $product->id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 hover:underline text-sm font-medium">Delete</button>
+                    </form>
                 </div>
 
             </div>

@@ -12,6 +12,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// ✅ Logout Success Page
+Route::get('/logout-success', function () {
+    return view('auth.logout-success');
+})->name('logout.success');
+
 
 // ✅ Product Routes (Already includes index, show, create, etc.)
 Route::resource('products', ProductController::class);

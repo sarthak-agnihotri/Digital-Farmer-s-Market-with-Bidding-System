@@ -65,12 +65,10 @@
                     @endif
 
                     {{-- Logout --}}
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition transform hover:scale-105">
-                            Logout
-                        </button>
-                    </form>
+                    <a href="{{ route('logout.show') }}"
+                       class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition transform hover:scale-105">
+                        Logout
+                    </a>
 
                 @endauth
 
