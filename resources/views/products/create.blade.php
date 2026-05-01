@@ -5,7 +5,7 @@
 <div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
 
     <h2 class="text-2xl font-bold text-center text-green-700 mb-6">
-        Add New Product
+        {{ __('Add New Product') }}
     </h2>
 
     <!-- ❌ Error Messages -->
@@ -24,43 +24,43 @@
 
         <!-- Product Name -->
         <div>
-            <label class="block font-semibold mb-1">Product Name</label>
+            <label class="block font-semibold mb-1">{{ __('Product Name') }}</label>
             <input type="text" name="name"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400"
-                placeholder="Enter product name" required>
+                placeholder="{{ __('Enter product name') }}" required>
         </div>
 
         <!-- Category -->
         <div>
-            <label class="block font-semibold mb-1">Category</label>
+            <label class="block font-semibold mb-1">{{ __('Category') }}</label>
             <select name="category"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400">
-                <option value="">-- Select Category --</option>
-                <option value="Fruits">Fruits</option>
-                <option value="Vegetables">Vegetables</option>
-                <option value="Grains">Grains</option>
+                <option value="">{{ __('-- Select Category --') }}</option>
+                <option value="Fruits">{{ __('Fruits') }}</option>
+                <option value="Vegetables">{{ __('Vegetables') }}</option>
+                <option value="Grains">{{ __('Grains') }}</option>
             </select>
         </div>
 
         <!-- Price -->
         <div>
-            <label class="block font-semibold mb-1">Price (₹)</label>
+            <label class="block font-semibold mb-1">{{ __('Price (₹)') }}</label>
             <input type="number" step="0.01" name="price"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400"
-                placeholder="Enter price" required>
+                placeholder="{{ __('Enter price') }}" required>
         </div>
 
         <!-- Quantity -->
         <div>
-            <label class="block font-semibold mb-1">Quantity</label>
+            <label class="block font-semibold mb-1">{{ __('Quantity') }}</label>
             <input type="number" name="quantity"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400"
-                placeholder="Enter quantity" required>
+                placeholder="{{ __('Enter quantity') }}" required>
         </div>
 
         <!-- Image Upload -->
         <div>
-            <label class="block font-semibold mb-1">Product Image</label>
+            <label class="block font-semibold mb-1">{{ __('Product Image') }}</label>
             <input type="file" name="image"
                 class="w-full border border-gray-300 rounded px-3 py-2">
 
@@ -71,20 +71,20 @@
         <!-- Bidding Toggle -->
         <div class="flex items-center gap-2">
             <input type="checkbox" name="is_bidding" id="biddingCheck">
-            <label for="biddingCheck" class="font-semibold">Enable Bidding</label>
+            <label for="biddingCheck" class="font-semibold">{{ __('Enable Bidding') }}</label>
         </div>
 
         <!-- Bidding Fields -->
         <div id="biddingFields" class="hidden space-y-3">
 
             <div>
-                <label class="block font-semibold mb-1">Buy Now Price (₹)</label>
+                <label class="block font-semibold mb-1">{{ __('Buy Now Price (₹)') }}</label>
                 <input type="number" step="0.01" name="buy_now_price"
                     class="w-full border border-gray-300 rounded px-3 py-2">
             </div>
 
             <div>
-                <label class="block font-semibold mb-1">Bidding End Time</label>
+                <label class="block font-semibold mb-1">{{ __('Bidding End Time') }}</label>
                 <input type="datetime-local" name="bidding_end_time"
                     class="w-full border border-gray-300 rounded px-3 py-2">
             </div>
@@ -95,7 +95,7 @@
         <div class="text-center mt-4">
             <button type="submit"
                 class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition shadow">
-                Add Product
+                {{ __('Add Product') }}
             </button>
         </div>
 

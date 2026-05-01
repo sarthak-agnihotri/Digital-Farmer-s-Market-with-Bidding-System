@@ -6,9 +6,9 @@
             <div class="inline-flex items-center justify-center rounded-full bg-red-100 px-4 py-2 text-2xl shadow-sm mb-4">
                 ⚠️
             </div>
-            <h2 class="text-3xl font-bold text-slate-900 mb-3">Confirm Logout</h2>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">{{ __('Confirm Logout') }}</h2>
             <p class="text-slate-600 max-w-xl mx-auto">
-                Are you sure you want to end your session? You can return to the dashboard if you change your mind.
+                {{ __('Are you sure you want to end your session? You can return to the dashboard if you change your mind.') }}
             </p>
         </div>
 
@@ -25,7 +25,7 @@
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
                         <div>
-                            <p class="text-sm text-slate-500">Logged in as</p>
+                            <p class="text-sm text-slate-500">{{ __('Logged in as') }}</p>
                             <p class="text-lg font-semibold text-slate-900">{{ auth()->user()->name }}</p>
                             <p class="text-sm text-slate-500">{{ auth()->user()->email }}</p>
                         </div>
@@ -51,12 +51,12 @@
 
                 <!-- LOGOUT DETAILS -->
                 <div class="rounded-3xl bg-amber-50 border border-amber-200 p-6 shadow">
-                    <p class="font-semibold text-amber-900 mb-3">What will happen?</p>
+                    <p class="font-semibold text-amber-900 mb-3">{{ __('What will happen?') }}</p>
                     <ul class="space-y-2 text-sm text-amber-800">
-                        <li>✓ Your session will end immediately</li>
-                        <li>✓ All active sessions will be terminated</li>
-                        <li>✓ Session data will be securely cleared</li>
-                        <li>✓ You will need to login again</li>
+                        <li>✓ {{ __('Your session will end immediately') }}</li>
+                        <li>✓ {{ __('All active sessions will be terminated') }}</li>
+                        <li>✓ {{ __('Session data will be securely cleared') }}</li>
+                        <li>✓ {{ __('You will need to login again') }}</li>
                     </ul>
                 </div>
 
@@ -96,14 +96,14 @@
                     
                     <a href="{{ route('dashboard') }}"
                        class="flex-1 rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:scale-105">
-                        ← Go Back
+                        {{ __('← Go Back') }}
                     </a>
 
                     <form method="POST" action="{{ route('logout') }}" class="flex-1">
                         @csrf
                         <button type="submit"
                                 class="w-full rounded-2xl bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 hover:scale-105">
-                            Yes, Logout 🚪
+                            {{ __('Yes, Logout 🚪') }}
                         </button>
                     </form>
 
@@ -111,7 +111,7 @@
 
                 <!-- FOOTER -->
                 <p class="text-center text-xs text-slate-500">
-                    Your privacy is important to us. All session data will be securely cleared.
+                    {{ __('Your privacy is important to us. All session data will be securely cleared.') }}
                 </p>
 
             </div>

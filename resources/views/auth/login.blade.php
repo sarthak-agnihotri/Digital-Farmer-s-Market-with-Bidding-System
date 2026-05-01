@@ -15,10 +15,10 @@
 
                         <div class="space-y-4">
                             <h2 class="text-4xl font-bold leading-tight">
-                                A professional website login
+                                {{ __('A professional website login') }}
                             </h2>
                             <p class="max-w-md text-sm text-emerald-100/85">
-                                Securely access your dashboard, manage products, and stay connected with buyers from a polished marketplace website.
+                                {{ __('Securely access your dashboard, manage products, and stay connected with buyers from a polished marketplace website.') }}
                             </p>
                         </div>
                     </div>
@@ -27,9 +27,9 @@
                         <div class="flex items-start gap-4 rounded-2xl bg-white/10 p-5">
                             <span class="text-2xl">🌱</span>
                             <div>
-                                <p class="font-semibold">Fresh product control</p>
+                                <p class="font-semibold">{{ __('Fresh product control') }}</p>
                                 <p class="text-sm text-emerald-100/75">
-                                    Manage listings easily from your dashboard.
+                                    {{ __('Manage listings easily from your dashboard.') }}
                                 </p>
                             </div>
                         </div>
@@ -37,9 +37,9 @@
                         <div class="flex items-start gap-4 rounded-2xl bg-white/10 p-5">
                             <span class="text-2xl">🛒</span>
                             <div>
-                                <p class="font-semibold">Professional storefront</p>
+                                <p class="font-semibold">{{ __('Professional storefront') }}</p>
                                 <p class="text-sm text-emerald-100/75">
-                                    Deliver a smooth buying experience.
+                                    {{ __('Deliver a smooth buying experience.') }}
                                 </p>
                             </div>
                         </div>
@@ -57,15 +57,15 @@
 
                         <div class="mb-10">
                             <span class="inline-flex rounded-full bg-emerald-100 px-4 py-1 text-sm font-semibold text-emerald-800">
-                                Sign in securely
+                                {{ __('Sign in securely') }}
                             </span>
 
                             <h1 class="mt-6 text-4xl font-bold text-slate-900">
-                                Welcome back.
+                                {{ __('Welcome back.') }}
                             </h1>
 
                             <p class="mt-3 text-base text-slate-600">
-                                Log in to manage your marketplace and orders.
+                                {{ __('Log in to manage your marketplace and orders.') }}
                             </p>
                         </div>
 
@@ -79,7 +79,7 @@
 
                             <!-- EMAIL -->
                             <div>
-                                <label class="block text-sm font-medium text-slate-700">Email</label>
+                                <label class="block text-sm font-medium text-slate-700">{{ __('Email') }}</label>
                                 <input type="email" name="email" value="{{ old('email') }}" required
                                     class="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
                                 <x-input-error :messages="$errors->get('email')" class="mt-2 text-sm text-red-600" />
@@ -87,7 +87,7 @@
 
                             <!-- PASSWORD -->
                             <div>
-                                <label class="block text-sm font-medium text-slate-700">Password</label>
+                                <label class="block text-sm font-medium text-slate-700">{{ __('Password') }}</label>
                                 <input type="password" name="password" required
                                     class="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
                                 <x-input-error :messages="$errors->get('password')" class="mt-2 text-sm text-red-600" />
@@ -97,12 +97,12 @@
                             <div class="flex items-center justify-between text-sm text-slate-600">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" name="remember" class="rounded border-gray-300">
-                                    Remember me
+                                    {{ __('Remember me') }}
                                 </label>
 
                                 @if (Route::has('password.request'))
                                     <a href="{{ route('password.request') }}" class="text-emerald-600 font-semibold hover:underline">
-                                        Forgot password?
+                                        {{ __('Forgot password?') }}
                                     </a>
                                 @endif
                             </div>
@@ -110,14 +110,14 @@
                             <!-- BUTTON -->
                             <button type="submit"
                                 class="w-full rounded-xl bg-emerald-700 py-3 text-white font-semibold hover:bg-emerald-800 transition shadow-lg shadow-emerald-500/20">
-                                Log in
+                                {{ __('Log in') }}
                             </button>
                         </form>
 
                         <p class="mt-8 text-center text-sm text-slate-600">
-                            Don’t have an account?
+                            {{ __('Don’t have an account?') }}
                             <a href="{{ route('register') }}" class="text-emerald-700 font-semibold hover:underline">
-                                Create one now
+                                {{ __('Create one now') }}
                             </a>
                         </p>
 

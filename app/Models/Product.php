@@ -32,4 +32,10 @@ class Product extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    // ✅ Product can be wishlisted by many users
+    public function wishlistedBy()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

@@ -24,6 +24,9 @@ class User extends Authenticatable
         'password',
         'role',
         'getting_started_completed',
+        'subscribed_to_product_alerts',
+        'preferred_product_categories',
+        'preferred_language',
     ];
 
     /**
@@ -46,6 +49,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'subscribed_to_product_alerts' => 'boolean',
+            'preferred_product_categories' => 'array',
         ];
     }
 
@@ -67,5 +72,10 @@ public function hasCompletedGettingStarted() {
 public function bids()
 {
     return $this->hasMany(Bid::class);
+}
+
+public function wishlists()
+{
+    return $this->hasMany(Wishlist::class);
 }
 }

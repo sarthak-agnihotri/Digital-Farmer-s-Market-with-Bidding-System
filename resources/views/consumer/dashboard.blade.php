@@ -8,10 +8,10 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold mb-2">
-                        Welcome back, {{ auth()->user()->name }}! 👋
+                        {{ __('Welcome back,') }} {{ auth()->user()->name }}! 👋
                     </h1>
                     <p class="text-green-100 text-lg">
-                        Discover fresh produce and place bids on premium items
+                        {{ __('Discover fresh produce and place bids on premium items') }}
                     </p>
                 </div>
                 <div class="hidden md:block">
@@ -30,13 +30,13 @@
                 <div class="text-3xl font-bold text-green-600 mb-2">
                     {{ \App\Models\Product::count() }}
                 </div>
-                <div class="text-gray-600">Products Available</div>
+                <div class="text-gray-600">{{ __('Products Available') }}</div>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-6 text-center">
                 <div class="text-3xl font-bold text-blue-600 mb-2">
                     {{ \App\Models\Bid::where('user_id', auth()->id())->count() }}
                 </div>
-                <div class="text-gray-600">Your Bids</div>
+                <div class="text-gray-600">{{ __('Your Bids') }}</div>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-6 text-center">
                 <div class="text-3xl font-bold text-purple-600 mb-2">
@@ -51,13 +51,13 @@
                     @endphp
                     {{ $wonBidsCount }}
                 </div>
-                <div class="text-gray-600">Bids Won</div>
+                <div class="text-gray-600">{{ __('Bids Won') }}</div>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-6 text-center">
                 <div class="text-3xl font-bold text-orange-600 mb-2">
                     ₹{{ \App\Models\Bid::where('user_id', auth()->id())->sum('bid_amount') }}
                 </div>
-                <div class="text-gray-600">Total Spent</div>
+                <div class="text-gray-600">{{ __('Total Spent') }}</div>
             </div>
         </div>
 
@@ -66,7 +66,7 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- Quick Actions -->
                 <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Quick Actions') }}</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <a href="{{ route('products.index') }}"
                            class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition transform hover:scale-105">
@@ -74,8 +74,8 @@
                                 <span class="text-2xl">🛒</span>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800">Browse Products</h3>
-                                <p class="text-sm text-gray-600">Explore fresh produce</p>
+                                <h3 class="font-semibold text-gray-800">{{ __('Browse Products') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Explore fresh produce') }}</p>
                             </div>
                         </a>
 
@@ -85,8 +85,8 @@
                                 <span class="text-2xl">💰</span>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800">My Bids</h3>
-                                <p class="text-sm text-gray-600">Track your offers</p>
+                                <h3 class="font-semibold text-gray-800">{{ __('My Bids') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Track your offers') }}</p>
                             </div>
                         </a>
 
@@ -96,8 +96,8 @@
                                 <span class="text-2xl">⭐</span>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800">Favorites</h3>
-                                <p class="text-sm text-gray-600">Saved products</p>
+                                <h3 class="font-semibold text-gray-800">{{ __('Favorites') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Saved products') }}</p>
                             </div>
                         </a>
 
@@ -107,8 +107,8 @@
                                 <span class="text-2xl">👤</span>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800">My Profile</h3>
-                                <p class="text-sm text-gray-600">Update information</p>
+                                <h3 class="font-semibold text-gray-800">{{ __('My Profile') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Update information') }}</p>
                             </div>
                         </a>
                     </div>
@@ -117,10 +117,10 @@
                 <!-- Recent Bids -->
                 <div class="bg-white rounded-xl shadow-sm p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-xl font-semibold text-gray-800">Recent Bids</h2>
+                        <h2 class="text-xl font-semibold text-gray-800">{{ __('Recent Bids') }}</h2>
                         <a href="{{ route('consumer.bids') }}"
                            class="text-green-600 hover:text-green-700 text-sm font-medium">
-                            View All →
+                            {{ __('View All →') }}
                         </a>
                     </div>
 
@@ -140,7 +140,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-800">{{ $bid->product->name }}</h4>
-                                    <p class="text-sm text-gray-600">Bid: ₹{{ $bid->bid_amount }}</p>
+                                    <p class="text-sm text-gray-600">{{ __('Bid:') }} ₹{{ $bid->bid_amount }}</p>
                                 </div>
                             </div>
                             <div class="text-right">
@@ -149,7 +149,7 @@
                                     $isWinning = $bid->product->bidding_end_time &&
                                                 now()->greaterThan($bid->product->bidding_end_time) &&
                                                 $bid->bid_amount == $bid->product->bids->max('bid_amount');
-                                    $statusText = $isWinning ? 'Won' : ($bid->product->bidding_end_time && now()->greaterThan($bid->product->bidding_end_time) ? 'Lost' : 'Active');
+                                    $statusText = $isWinning ? __('Won') : ($bid->product->bidding_end_time && now()->greaterThan($bid->product->bidding_end_time) ? __('Lost') : __('Active'));
                                 @endphp
                                 <div class="text-xs px-2 py-1 rounded-full {{ $isWinning ? 'bg-green-100 text-green-800' : ($bid->product->bidding_end_time && now()->greaterThan($bid->product->bidding_end_time) ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
                                     {{ $statusText }}
@@ -159,10 +159,10 @@
                     @empty
                         <div class="text-center py-8">
                             <div class="text-4xl mb-4">💰</div>
-                            <p class="text-gray-600">No bids placed yet</p>
+                            <p class="text-gray-600">{{ __('No bids placed yet') }}</p>
                             <a href="{{ route('products.index') }}"
                                class="text-green-600 hover:text-green-700 font-medium">
-                                Start browsing products →
+                                {{ __('Start browsing products →') }}
                             </a>
                         </div>
                     @endforelse
@@ -173,22 +173,22 @@
             <div class="space-y-6">
                 <!-- Marketplace Highlights -->
                 <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Marketplace Highlights</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Marketplace Highlights') }}</h2>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">Fresh Arrivals Today</span>
+                            <span class="text-gray-600">{{ __('Fresh Arrivals Today') }}</span>
                             <span class="font-semibold text-green-600">
                                 {{ \App\Models\Product::whereDate('created_at', today())->count() }}
                             </span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">Active Bids</span>
+                            <span class="text-gray-600">{{ __('Active Bids') }}</span>
                             <span class="font-semibold text-blue-600">
                                 {{ \App\Models\Bid::whereDate('created_at', today())->count() }}
                             </span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">Farmers Online</span>
+                            <span class="text-gray-600">{{ __('Farmers Online') }}</span>
                             <span class="font-semibold text-purple-600">
                                 {{ \App\Models\User::where('role', 'farmer')->count() }}
                             </span>
@@ -198,36 +198,36 @@
 
                 <!-- Tips & Tricks -->
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">💡 Pro Tips</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ __('💡 Pro Tips') }}</h2>
                     <ul class="space-y-3 text-sm text-gray-700">
                         <li class="flex items-start">
                             <span class="text-green-600 mr-2">•</span>
-                            Place bids early for better chances
+                            {{ __('Place bids early for better chances') }}
                         </li>
                         <li class="flex items-start">
                             <span class="text-green-600 mr-2">•</span>
-                            Check product freshness dates
+                            {{ __('Check product freshness dates') }}
                         </li>
                         <li class="flex items-start">
                             <span class="text-green-600 mr-2">•</span>
-                            Contact farmers for bulk orders
+                            {{ __('Contact farmers for bulk orders') }}
                         </li>
                         <li class="flex items-start">
                             <span class="text-green-600 mr-2">•</span>
-                            Save favorite products for later
+                            {{ __('Save favorite products for later') }}
                         </li>
                     </ul>
                 </div>
 
                 <!-- Quick Search -->
                 <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Search</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Quick Search') }}</h2>
                     <form action="{{ route('products.index') }}" method="GET" class="space-y-3">
-                        <input type="text" name="search" placeholder="Search products..."
+                        <input type="text" name="search" placeholder="{{ __('Search products...') }}"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         <button type="submit"
                                 class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-                            🔍 Search
+                            {{ __('Search') }}
                         </button>
                     </form>
                 </div>

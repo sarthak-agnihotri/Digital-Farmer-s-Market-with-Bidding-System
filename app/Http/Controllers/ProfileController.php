@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Bid;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +18,26 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+
+        $data = [
+            'user' => $user,
+            'memberSince' => $user->created_at?->format('F j, Y'),
+        ];
+
+        if ($user->isFarmer()) {
+            $data['productCount'] = Product::where('user_id', $user->id)->count();
+        }
+
+        if ($user->isConsumer()) {
+            $data['bidCount'] = Bid::where('user_id', $user->id)->count();
+        }
+
+        if ($user->isAdmin()) {
+            $data['pendingProducts'] = Product::where('status', 'pending')->count();
+        }
+
+        return view('profile.edit', $data);
     }
 
     /**
@@ -26,13 +45,18 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->fill($request->validated());
+        $user->subscribed_to_product_alerts = $request->boolean('subscribed_to_product_alerts');
+        $user->preferred_product_categories = $request->input('preferred_product_categories', []);
+        $user->preferred_language = $request->input('preferred_language', $user->preferred_language ?? 'en');
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

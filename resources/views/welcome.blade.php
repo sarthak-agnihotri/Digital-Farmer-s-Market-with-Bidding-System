@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Farmer Market - Fresh From Farm to Table</title>
+    <title>{{ __('ui.site_title') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50">
@@ -12,16 +12,16 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <span class="text-3xl">🌾</span>
-                <span class="text-2xl font-bold text-green-700">Digital Farmer Market</span>
+                <span class="text-2xl font-bold text-green-700">{{ __('ui.site_name') }}</span>
             </div>
             <div class="hidden md:flex items-center gap-8">
-                <a href="#" class="text-gray-700 hover:text-green-700 transition font-medium">Home</a>
-                <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-green-700 transition font-medium">Marketplace</a>
-                <a href="#features" class="text-gray-700 hover:text-green-700 transition font-medium">Why Us</a>
+                <a href="#" class="text-gray-700 hover:text-green-700 transition font-medium">{{ __('ui.home') }}</a>
+                <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-green-700 transition font-medium">{{ __('ui.marketplace') }}</a>
+                <a href="#features" class="text-gray-700 hover:text-green-700 transition font-medium">{{ __('ui.why_us') }}</a>
                 @auth
-                    <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-green-700 transition font-medium">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-green-700 transition font-medium">{{ __('ui.dashboard') }}</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-green-700 transition font-medium">Sign In</a>
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-green-700 transition font-medium">{{ __('ui.sign_in') }}</a>
                 @endauth
             </div>
         </div>
@@ -39,10 +39,10 @@
                 <div class="space-y-8">
                     <div>
                         <h1 class="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-4">
-                            Fresh Produce, <span class="text-green-700">Direct from Farmers</span>
+                            {{ __('ui.hero_title') }} <span class="text-green-700">{{ __('ui.hero_title_emphasis') }}</span>
                         </h1>
                         <p class="text-xl text-gray-600 leading-relaxed">
-                            Connect directly with local farmers. Buy fresh produce at fair prices, place bids on premium items, and support sustainable agriculture in your community.
+                            {{ __('ui.hero_subtitle') }}
                         </p>
                     </div>
 
@@ -52,26 +52,26 @@
                             @if(auth()->user()->isFarmer())
                                 <a href="{{ route('products.create') }}"
                                    class="px-8 py-4 bg-green-700 text-white font-bold text-lg rounded-lg hover:bg-green-800 transition shadow-lg">
-                                    Start Selling
+                                    {{ __('ui.start_selling') }}
                                 </a>
                             @else
                                 <a href="{{ route('consumer.dashboard') }}"
                                    class="px-8 py-4 bg-green-700 text-white font-bold text-lg rounded-lg hover:bg-green-800 transition shadow-lg">
-                                    Shop Now
+                                    {{ __('ui.shop_now') }}
                                 </a>
                             @endif
                             <a href="{{ route('dashboard') }}"
                                class="px-8 py-4 bg-gray-200 text-gray-800 font-bold text-lg rounded-lg hover:bg-gray-300 transition">
-                                Dashboard
+                                {{ __('ui.dashboard') }}
                             </a>
                         @else
                             <a href="{{ route('register') }}"
                                class="px-8 py-4 bg-green-700 text-white font-bold text-lg rounded-lg hover:bg-green-800 transition shadow-lg">
-                                Get Started Free
+                                {{ __('ui.get_started_free') }}
                             </a>
                             <a href="{{ route('login') }}"
                                class="px-8 py-4 bg-gray-200 text-gray-800 font-bold text-lg rounded-lg hover:bg-gray-300 transition">
-                                Sign In
+                                {{ __('ui.sign_in') }}
                             </a>
                         @endauth
                     </div>
@@ -80,15 +80,15 @@
                     <div class="flex gap-6 pt-4">
                         <div>
                             <div class="text-2xl font-bold text-green-700">{{ \App\Models\Product::count() }}+</div>
-                            <div class="text-sm text-gray-600">Fresh Products</div>
+                            <div class="text-sm text-gray-600">{{ __('ui.fresh_products') }}</div>
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-green-700">{{ \App\Models\User::where('role', 'farmer')->count() }}</div>
-                            <div class="text-sm text-gray-600">Local Farmers</div>
+                            <div class="text-sm text-gray-600">{{ __('ui.local_farmers') }}</div>
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-green-700">{{ \App\Models\User::where('role', 'consumer')->count() }}+</div>
-                            <div class="text-sm text-gray-600">Happy Customers</div>
+                            <div class="text-sm text-gray-600">{{ __('ui.happy_customers') }}</div>
                         </div>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                         🥬
                     </div>
                     <div class="absolute top-4 right-4 bg-white/90 px-4 py-2 rounded-lg text-sm font-semibold text-gray-800 shadow-lg">
-                        Fresh Daily
+                        {{ __('ui.fresh_daily') }}
                     </div>
                 </div>
             </div>
@@ -110,35 +110,35 @@
     <div id="features" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Why Choose Us?</h2>
-                <p class="text-xl text-gray-600">We make farm-to-table commerce simple, fair, and sustainable</p>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('ui.why_choose_us') }}</h2>
+                <p class="text-xl text-gray-600">{{ __('ui.why_choose_us_subtitle') }}</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
                 <div class="p-8 bg-gray-50 rounded-xl border-2 border-green-100 hover:border-green-300 transition">
                     <div class="text-5xl mb-4">🌱</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">100% Fresh & Local</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">{{ __('ui.feature_fresh_local_title') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Get produce directly from farmers in your area. No middlemen, no storage delays. Just pure farm-to-table goodness delivered fresh.
+                        {{ __('ui.feature_fresh_local_text') }}
                     </p>
                 </div>
 
                 <!-- Feature 2 -->
                 <div class="p-8 bg-gray-50 rounded-xl border-2 border-green-100 hover:border-green-300 transition">
                     <div class="text-5xl mb-4">💰</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Fair Bidding System</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">{{ __('ui.feature_fair_bidding_title') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Transparent pricing with competitive bidding. Farmers get fair compensation, and consumers save money. Everyone wins.
+                        {{ __('ui.feature_fair_bidding_text') }}
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="p-8 bg-gray-50 rounded-xl border-2 border-green-100 hover:border-green-300 transition">
                     <div class="text-5xl mb-4">🤝</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Community Driven</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">{{ __('ui.feature_community_title') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Build relationships with local farmers. Support sustainable agriculture and strengthen your community's food ecosystem.
+                        {{ __('ui.feature_community_text') }}
                     </p>
                 </div>
             </div>
@@ -151,19 +151,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="text-center">
                     <div class="text-5xl font-bold text-white mb-2">{{ \App\Models\Product::count() }}</div>
-                    <div class="text-green-100 font-medium">Active Listings</div>
+                    <div class="text-green-100 font-medium">{{ __('ui.active_listings') }}</div>
                 </div>
                 <div class="text-center">
                     <div class="text-5xl font-bold text-white mb-2">{{ \App\Models\User::where('role', 'farmer')->count() }}</div>
-                    <div class="text-green-100 font-medium">Verified Farmers</div>
+                    <div class="text-green-100 font-medium">{{ __('ui.verified_farmers') }}</div>
                 </div>
                 <div class="text-center">
                     <div class="text-5xl font-bold text-white mb-2">{{ \App\Models\User::where('role', 'consumer')->count() }}</div>
-                    <div class="text-green-100 font-medium">Active Buyers</div>
+                    <div class="text-green-100 font-medium">{{ __('ui.active_buyers') }}</div>
                 </div>
                 <div class="text-center">
                     <div class="text-5xl font-bold text-white mb-2">{{ \App\Models\Bid::count() }}</div>
-                    <div class="text-green-100 font-medium">Successful Bids</div>
+                    <div class="text-green-100 font-medium">{{ __('ui.successful_bids') }}</div>
                 </div>
             </div>
         </div>
@@ -172,23 +172,23 @@
     <!-- How It Works Section -->
     <div class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-900 text-center mb-16">How It Works</h2>
+            <h2 class="text-4xl font-bold text-gray-900 text-center mb-16">{{ __('ui.how_it_works') }}</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-green-700 text-white rounded-full text-2xl font-bold mb-4">1</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Browse Products</h3>
-                    <p class="text-gray-600">Explore fresh produce from local farmers with detailed information and pricing.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ __('ui.how_it_works_step1_title') }}</h3>
+                    <p class="text-gray-600">{{ __('ui.how_it_works_step1_text') }}</p>
                 </div>
                 <div class="text-center">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-green-700 text-white rounded-full text-2xl font-bold mb-4">2</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Place Your Bid</h3>
-                    <p class="text-gray-600">Bid on items or buy at listed prices. Our transparent system ensures fair deals.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ __('ui.how_it_works_step2_title') }}</h3>
+                    <p class="text-gray-600">{{ __('ui.how_it_works_step2_text') }}</p>
                 </div>
                 <div class="text-center">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-green-700 text-white rounded-full text-2xl font-bold mb-4">3</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Get Delivered</h3>
-                    <p class="text-gray-600">Fresh produce delivered straight from farm to your table.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ __('ui.how_it_works_step3_title') }}</h3>
+                    <p class="text-gray-600">{{ __('ui.how_it_works_step3_text') }}</p>
                 </div>
             </div>
         </div>
@@ -198,20 +198,20 @@
     <div class="bg-green-800 py-20">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <h2 class="text-4xl font-bold text-white mb-6">
-                Join the Fresh Revolution
+                {{ __('ui.join_fresh_revolution') }}
             </h2>
             <p class="text-xl text-green-100 mb-10">
-                Become part of a thriving community connecting farmers and consumers. Start today.
+                {{ __('ui.join_revolution_text') }}
             </p>
             @auth
                 <a href="{{ route('dashboard') }}"
                    class="inline-block px-10 py-4 bg-white text-green-800 font-bold text-lg rounded-lg hover:bg-gray-100 transition shadow-lg">
-                    Go to Dashboard
+                    {{ __('ui.go_to_dashboard') }}
                 </a>
             @else
                 <a href="{{ route('register') }}"
                    class="inline-block px-10 py-4 bg-white text-green-800 font-bold text-lg rounded-lg hover:bg-gray-100 transition shadow-lg">
-                    Get Started for Free
+                    {{ __('ui.get_started_free') }}
                 </a>
             @endauth
         </div>
@@ -243,10 +243,10 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                    Why Choose Our Farmer Market?
+                    {{ __('Why Choose Our Farmer Market?') }}
                 </h2>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    We're revolutionizing the way you buy and sell fresh produce
+                    {{ __('We\'re revolutionizing the way you buy and sell fresh produce') }}
                 </p>
             </div>
 
@@ -256,10 +256,10 @@
                     <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-3xl">🌱</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Fresh ;& Local</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Fresh ;& Local') }}</h3>
                     <p class="text-gray-600">
-                        Get the freshest produce directly from local farmers in your area.
-                        No middlemen, just pure farm-to-table goodness.
+                        {{ __('Get the freshest produce directly from local farmers in your area.') }}
+                        {{ __('No middlemen, just pure farm-to-table goodness.') }}
                     </p>
                 </div>
 
@@ -268,10 +268,10 @@
                     <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-3xl">💰</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Fair Pricing</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Fair Pricing') }}</h3>
                     <p class="text-gray-600">
-                        Competitive bidding system ensures fair prices for both farmers and consumers.
-                        Support local agriculture while saving money.
+                        {{ __('Competitive bidding system ensures fair prices for both farmers and consumers.') }}
+                        {{ __('Support local agriculture while saving money.') }}
                     </p>
                 </div>
 
@@ -280,10 +280,10 @@
                     <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-3xl">🤝</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Community Driven</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Community Driven') }}</h3>
                     <p class="text-gray-600">
-                        Build connections with local farmers and fellow food enthusiasts.
-                        Be part of a sustainable food ecosystem.
+                        {{ __('Build connections with local farmers and fellow food enthusiasts.') }}
+                        {{ __('Be part of a sustainable food ecosystem.') }}
                     </p>
                 </div>
             </div>
@@ -298,25 +298,25 @@
                     <div class="text-3xl md:text-4xl font-bold mb-2">
                         {{ \App\Models\Product::count() }}
                     </div>
-                    <div class="text-green-100">Products Listed</div>
+                    <div class="text-green-100">{{ __('Products Listed') }}</div>
                 </div>
                 <div class="text-white">
                     <div class="text-3xl md:text-4xl font-bold mb-2">
                         {{ \App\Models\User::where('role', 'farmer')->count() }}
                     </div>
-                    <div class="text-green-100">Active Farmers</div>
+                    <div class="text-green-100">{{ __('Active Farmers') }}</div>
                 </div>
                 <div class="text-white">
                     <div class="text-3xl md:text-4xl font-bold mb-2">
                         {{ \App\Models\User::where('role', 'consumer')->count() }}
                     </div>
-                    <div class="text-green-100">Happy Consumers</div>
+                    <div class="text-green-100">{{ __('Happy Consumers') }}</div>
                 </div>
                 <div class="text-white">
                     <div class="text-3xl md:text-4xl font-bold mb-2">
                         {{ \App\Models\Bid::count() }}
                     </div>
-                    <div class="text-green-100">Bids Placed</div>
+                    <div class="text-green-100">{{ __('Bids Placed') }}</div>
                 </div>
             </div>
         </div>
@@ -326,25 +326,25 @@
     <div class="py-20 bg-gray-50">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-                Ready to Start Your Fresh Journey?
+                {{ __('Ready to Start Your Fresh Journey?') }}
             </h2>
             <p class="text-xl text-gray-600 mb-8">
-                Join thousands of farmers and consumers already using our platform
+                {{ __('Join thousands of farmers and consumers already using our platform') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 @auth
                     <a href="{{ route('products.index') }}"
                        class="bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-green-700 transition transform hover:scale-105 shadow-lg">
-                        Explore Marketplace
+                        {{ __('Explore Marketplace') }}
                     </a>
                 @else
                     <a href="{{ route('register') }}"
                        class="bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-green-700 transition transform hover:scale-105 shadow-lg">
-                        Get Started Free
+                        {{ __('Get Started Free') }}
                     </a>
                     <a href="{{ route('login') }}"
                        class="bg-white text-green-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-green-50 transition transform hover:scale-105 shadow-lg border-2 border-green-600">
-                        Sign In
+                        {{ __('Sign In') }}
                     </a>
                 @endauth
             </div>

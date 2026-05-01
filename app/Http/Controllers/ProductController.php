@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\NewProductAlert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class ProductController extends Controller
 {
@@ -28,7 +31,13 @@ class ProductController extends Controller
         $query->where('price', '<=', $request->price);
         }
        $products = $query->with('bids.user')->latest()->get();
-        return view('products.index', compact('products'));
+
+       $wishlistedProductIds = [];
+       if (auth()->check() && auth()->user()->isConsumer()) {
+           $wishlistedProductIds = auth()->user()->wishlists()->pluck('product_id')->toArray();
+       }
+
+        return view('products.index', compact('products', 'wishlistedProductIds'));
     }
 
     /**
@@ -75,7 +84,7 @@ class ProductController extends Controller
     }
 
     // store data
-    \App\Models\Product::create([
+    $product = \App\Models\Product::create([
         'user_id' => auth()->id(),
         'name' => $request->name,
         'category' => $request->category,
@@ -90,6 +99,17 @@ class ProductController extends Controller
         'image' => $imagePath,
     ]);
 
+    $subscribers = User::where('subscribed_to_product_alerts', true)
+        ->where(function ($query) use ($product) {
+            $query->whereNull('preferred_product_categories')
+                ->orWhereJsonContains('preferred_product_categories', $product->category);
+        })
+        ->get();
+
+    if ($subscribers->isNotEmpty()) {
+        Notification::send($subscribers, new NewProductAlert($product));
+    }
+
     return redirect()->route('dashboard')->with('success', 'Product created successfully.');
 }
 
@@ -101,7 +121,12 @@ class ProductController extends Controller
     // Load bids + user (important for bidding history)
     $product->load('bids.user');
 
-    return view('products.show', compact('product'));
+    $isWishlisted = false;
+    if (auth()->check() && auth()->user()->isConsumer()) {
+        $isWishlisted = auth()->user()->wishlists()->where('product_id', $product->id)->exists();
+    }
+
+    return view('products.show', compact('product', 'isWishlisted'));
 }
     /**
      * Show the form for editing the specified resource.

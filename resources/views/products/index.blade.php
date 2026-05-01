@@ -19,32 +19,32 @@
 
 <!-- 🔍 FILTER -->
 <div class="bg-white/30 backdrop-blur-xl border border-white/30 p-6 rounded-2xl shadow-lg mb-6">
-    <h3 class="text-lg font-semibold mb-4">Filter Products</h3>
+    <h3 class="text-lg font-semibold mb-4">{{ __('Filter Products') }}</h3>
 
     <form method="GET" action="{{ route('products.index') }}" 
           class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
 
         <div>
-            <label class="text-sm text-gray-500">Search</label>
+            <label class="text-sm text-gray-500">{{ __('Search') }}</label>
             <input type="text" name="search" 
                 value="{{ request('search') }}"
-                placeholder="Search by name..."
+                placeholder="{{ __('Search by name...') }}"
                 class="w-full mt-1 px-4 py-2 bg-white/40 backdrop-blur border border-white/40 rounded-lg focus:ring-2 focus:ring-green-400 outline-none">
         </div>
 
         <div>
-            <label class="text-sm text-gray-500">Category</label>
+            <label class="text-sm text-gray-500">{{ __('Category') }}</label>
             <select name="category" 
                 class="w-full mt-1 px-4 py-2 bg-white/40 backdrop-blur border border-white/40 rounded-lg focus:ring-2 focus:ring-green-400">
-                <option value="">All</option>
-                <option value="Fruits" {{ request('category') == 'Fruits' ? 'selected' : '' }}>Fruits</option>
-                <option value="Vegetables" {{ request('category') == 'Vegetables' ? 'selected' : '' }}>Vegetables</option>
-                <option value="Grains" {{ request('category') == 'Grains' ? 'selected' : '' }}>Grains</option>
+                <option value="">{{ __('All') }}</option>
+                <option value="Fruits" {{ request('category') == 'Fruits' ? 'selected' : '' }}>{{ __('Fruits') }}</option>
+                <option value="Vegetables" {{ request('category') == 'Vegetables' ? 'selected' : '' }}>{{ __('Vegetables') }}</option>
+                <option value="Grains" {{ request('category') == 'Grains' ? 'selected' : '' }}>{{ __('Grains') }}</option>
             </select>
         </div>
 
         <div>
-            <label class="text-sm text-gray-500">Max Price</label>
+            <label class="text-sm text-gray-500">{{ __('Max Price') }}</label>
             <input type="number" name="price" 
                 value="{{ request('price') }}"
                 class="w-full mt-1 px-4 py-2 bg-white/40 backdrop-blur border border-white/40 rounded-lg focus:ring-2 focus:ring-green-400">
@@ -52,12 +52,12 @@
 
         <div class="flex gap-2">
             <button class="w-full bg-green-500/80 backdrop-blur text-white py-2 rounded-lg hover:bg-green-600/80 transition shadow-md">
-                Search
+                {{ __('Search') }}
             </button>
 
             <a href="{{ route('products.index') }}"
                class="w-full text-center bg-gray-400/80 text-white py-2 rounded-lg hover:bg-gray-500/80 backdrop-blur">
-               Reset
+               {{ __('Reset') }}
             </a>
         </div>
 
@@ -65,7 +65,7 @@
 </div>
 
 <!-- 📦 PRODUCTS -->
-<h2 class="text-2xl font-semibold mb-4">All Products</h2>
+<h2 class="text-2xl font-semibold mb-4">{{ __('All Products') }}</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -81,13 +81,26 @@
             <div class="absolute top-4 right-4 z-10">
                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full shadow-lg
                     {{ now()->greaterThan($product->bidding_end_time) ? 'bg-red-500/90 text-white' : 'bg-green-500/90 text-white' }}">
-                    {{ now()->greaterThan($product->bidding_end_time) ? '🏁 Closed' : '🔥 Open' }}
+                    {{ now()->greaterThan($product->bidding_end_time) ? __('🏁 Closed') : __('🔥 Open') }}
                 </span>
             </div>
         @endif
 
         <!-- 🖼 IMAGE -->
         <div class="h-48 bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center overflow-hidden relative">
+            @auth
+                @if(auth()->user()->isConsumer())
+                    @php
+                        $isWishlisted = in_array($product->id, $wishlistedProductIds);
+                    @endphp
+                    <button onclick="toggleWishlist({{ $product->id }}, this)" class="absolute top-4 left-4 z-20 p-2 rounded-full backdrop-blur-md bg-white/40 shadow-sm hover:bg-white/80 transition group/wishlist">
+                        <svg class="w-6 h-6 transition-colors duration-300 {{ $isWishlisted ? 'text-pink-500 fill-pink-500' : 'text-gray-400 fill-transparent group-hover/wishlist:text-pink-400' }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                        </svg>
+                    </button>
+                @endif
+            @endauth
+
             @if($product->image)
                 <img src="{{ asset('storage/'.$product->image) }}"
                      class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
@@ -95,7 +108,7 @@
             @else
                 <div class="text-center">
                     <span class="text-6xl mb-2 block">🥕</span>
-                    <span class="text-gray-400 text-sm">No Image</span>
+                    <span class="text-gray-400 text-sm">{{ __('No Image') }}</span>
                 </div>
             @endif
         </div>
@@ -113,7 +126,7 @@
                         ₹{{ $product->price }}
                     </div>
                     <div class="text-sm text-gray-500">
-                        Qty: {{ $product->quantity }}
+                        {{ __('Qty:') }} {{ $product->quantity }}
                     </div>
                 </div>
             </div>
@@ -122,7 +135,7 @@
             @if($product->is_bidding)
                 <div class="bg-blue-50/50 backdrop-blur rounded-lg p-4 mb-4">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium text-blue-800">Highest Bid:</span>
+                        <span class="text-sm font-medium text-blue-800">{{ __('Highest Bid:') }}</span>
                         <span class="font-bold text-blue-600">
                             ₹{{ $product->bids->max('bid_amount') ?? $product->price }}
                         </span>
@@ -130,7 +143,7 @@
 
                     @if($product->bidding_end_time)
                         <div class="flex items-center justify-between text-sm">
-                            <span class="text-blue-700">⏳ Time Left:</span>
+                            <span class="text-blue-700">{{ __('⏳ Time Left:') }}</span>
                             <span id="timer-{{ $product->id }}" class="font-mono text-blue-600"></span>
                         </div>
                     @endif
@@ -149,7 +162,7 @@
                         <div>
                             <div class="font-semibold text-sm">Auction Ended</div>
                             <div class="text-xs">
-                                Winner: {{ $highestBid && $highestBid->user ? $highestBid->user->name : 'No bids' }}
+                                {{ __('Winner:') }} {{ $highestBid && $highestBid->user ? $highestBid->user->name : __('No bids') }}
                             </div>
                         </div>
                     </div>
@@ -162,9 +175,8 @@
                 <!-- View Details -->
                 <a href="{{ route('products.show', $product->id) }}"
                    class="block text-center bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition shadow-lg font-medium">
-                    👁️ View Details
+                    {{ __('👁️ View Details') }}
                 </a>
-
                 <!-- Buy Now (for consumers) -->
                 @auth
                     @if(auth()->user()->isConsumer())
@@ -172,7 +184,7 @@
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <button class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-xl hover:from-orange-600 hover:to-orange-700 transition shadow-lg font-medium">
-                                🛒 Buy Now - ₹{{ $product->price }}
+                                {{ __('🛒 Buy Now - ₹:price', ['price' => $product->price]) }}
                             </button>
                         </form>
                     @endif
@@ -191,17 +203,17 @@
                                         <input type="number"
                                                name="bid_amount"
                                                class="w-full bg-white/60 backdrop-blur border border-white/40 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none"
-                                               placeholder="Enter bid amount"
+                                               placeholder="{{ __('Enter bid amount') }}"
                                                min="{{ ($product->bids->max('bid_amount') ?? $product->price) + 1 }}"
                                                required>
                                     </div>
                                     <button class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition shadow-lg font-medium whitespace-nowrap">
-                                        💰 Bid
+                                        {{ __('💰 Bid') }}
                                     </button>
                                 </div>
 
                                 <div class="text-xs text-gray-600 text-center">
-                                    Minimum bid: ₹{{ ($product->bids->max('bid_amount') ?? $product->price) + 1 }}
+                                    {{ __('Minimum bid: ₹:min', ['min' => ($product->bids->max('bid_amount') ?? $product->price) + 1]) }}
                                 </div>
                             </form>
                         @endif
@@ -209,7 +221,7 @@
                         <div class="text-center py-2">
                             <a href="{{ route('login') }}"
                                class="text-green-600 hover:text-green-700 text-sm font-medium">
-                                Sign in to bid →
+                                {{ __('Sign in to bid →') }}
                             </a>
                         </div>
                     @endauth
@@ -223,7 +235,7 @@
 
     @empty
         <p class="text-gray-600 col-span-3 text-center">
-            No products found.
+            {{ __('No products found.') }}
         </p>
     @endforelse
 
@@ -231,4 +243,33 @@
 
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    function toggleWishlist(productId, btn) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        fetch(`/wishlist/${productId}/toggle`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const svg = btn.querySelector('svg');
+            if (data.status === 'added') {
+                svg.classList.remove('text-gray-400', 'fill-transparent');
+                svg.classList.add('text-pink-500', 'fill-pink-500');
+            } else {
+                svg.classList.add('text-gray-400', 'fill-transparent');
+                svg.classList.remove('text-pink-500', 'fill-pink-500');
+            }
+        });
+    }
+</script>
 @endsection

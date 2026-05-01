@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bid;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -13,7 +15,45 @@ class GettingStartedController extends Controller
      */
     public function index(): View
     {
-        return view('getting-started.index');
+        $user = auth()->user();
+
+        $steps = [
+            [
+                'title' => __('ui.verify_email'),
+                'description' => __('Verify your email address for full access.'),
+                'complete' => (bool) $user->email_verified_at,
+            ],
+            [
+                'title' => __('ui.complete_profile'),
+                'description' => __('Complete your profile and alert preferences.'),
+                'complete' => (bool) ($user->preferred_language || $user->preferred_product_categories),
+            ],
+        ];
+
+        if ($user->isFarmer()) {
+            $steps[] = [
+                'title' => __('ui.first_action'),
+                'description' => __('Add your first product to start selling.'),
+                'complete' => Product::where('user_id', $user->id)->exists(),
+            ];
+        } elseif ($user->isConsumer()) {
+            $steps[] = [
+                'title' => __('ui.first_action'),
+                'description' => __('Place your first bid or buy now order.'),
+                'complete' => Bid::where('user_id', $user->id)->exists(),
+            ];
+        } elseif ($user->isAdmin()) {
+            $steps[] = [
+                'title' => __('ui.first_action'),
+                'description' => __('Review the pending marketplace requests.'),
+                'complete' => Product::where('status', 'pending')->exists(),
+            ];
+        }
+
+        $completed = collect($steps)->where('complete', true)->count();
+        $progress = intval(($completed / count($steps)) * 100);
+
+        return view('getting-started.index', compact('steps', 'progress', 'completed'));
     }
 
     /**

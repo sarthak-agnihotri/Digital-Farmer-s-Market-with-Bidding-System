@@ -26,6 +26,10 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'subscribed_to_product_alerts' => ['sometimes', 'boolean'],
+            'preferred_product_categories' => ['nullable', 'array'],
+            'preferred_product_categories.*' => ['string', Rule::in(['Fruits', 'Vegetables', 'Grains'])],
+            'preferred_language' => ['nullable', 'string', Rule::in(['en', 'hi'])],
         ];
     }
 }

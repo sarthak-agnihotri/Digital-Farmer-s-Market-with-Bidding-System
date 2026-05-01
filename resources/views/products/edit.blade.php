@@ -5,7 +5,7 @@
 <div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
 
     <h2 class="text-2xl font-bold text-center text-green-700 mb-6">
-        Edit Product
+        {{ __('Edit Product') }}
     </h2>
 
     <!-- ❌ Error Messages -->
@@ -25,7 +25,7 @@
 
         <!-- Product Name -->
         <div>
-            <label class="block font-semibold mb-1">Product Name</label>
+            <label class="block font-semibold mb-1">{{ __('Product Name') }}</label>
             <input type="text" name="name"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400"
                 value="{{ old('name', $product->name) }}" placeholder="Enter product name" required>
@@ -33,10 +33,10 @@
 
         <!-- Category -->
         <div>
-            <label class="block font-semibold mb-1">Category</label>
+            <label class="block font-semibold mb-1">{{ __('Category') }}</label>
             <select name="category"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400">
-                <option value="">-- Select Category --</option>
+                <option value="">{{ __('-- Select Category --') }}</option>
                 <option value="Fruits" {{ old('category', $product->category) == 'Fruits' ? 'selected' : '' }}>Fruits</option>
                 <option value="Vegetables" {{ old('category', $product->category) == 'Vegetables' ? 'selected' : '' }}>Vegetables</option>
                 <option value="Grains" {{ old('category', $product->category) == 'Grains' ? 'selected' : '' }}>Grains</option>
@@ -45,7 +45,7 @@
 
         <!-- Price -->
         <div>
-            <label class="block font-semibold mb-1">Price (₹)</label>
+            <label class="block font-semibold mb-1">{{ __('Price (₹)') }}</label>
             <input type="number" step="0.01" name="price"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400"
                 value="{{ old('price', $product->price) }}" placeholder="Enter price" required>
@@ -53,7 +53,7 @@
 
         <!-- Quantity -->
         <div>
-            <label class="block font-semibold mb-1">Quantity</label>
+            <label class="block font-semibold mb-1">{{ __('Quantity') }}</label>
             <input type="number" name="quantity"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-400"
                 value="{{ old('quantity', $product->quantity) }}" placeholder="Enter quantity" required>
@@ -61,14 +61,14 @@
 
         <!-- Image Upload -->
         <div>
-            <label class="block font-semibold mb-1">Product Image</label>
+            <label class="block font-semibold mb-1">{{ __('Product Image') }}</label>
             <input type="file" name="image"
                 class="w-full border border-gray-300 rounded px-3 py-2">
 
             <!-- 🔥 Current Image Preview -->
             @if($product->image)
                 <div class="mt-3">
-                    <p class="text-sm text-gray-600 mb-2">Current Image:</p>
+                    <p class="text-sm text-gray-600 mb-2">{{ __('Current Image:') }}</p>
                     <img src="{{ asset('storage/' . $product->image) }}" class="h-32 rounded border">
                 </div>
             @endif
@@ -80,21 +80,21 @@
         <!-- Bidding Toggle -->
         <div class="flex items-center gap-2">
             <input type="checkbox" name="is_bidding" id="biddingCheck" {{ old('is_bidding', $product->is_bidding) ? 'checked' : '' }}>
-            <label for="biddingCheck" class="font-semibold">Enable Bidding</label>
+            <label for="biddingCheck" class="font-semibold">{{ __('Enable Bidding') }}</label>
         </div>
 
         <!-- Bidding Fields -->
         <div id="biddingFields" class="space-y-3 {{ !old('is_bidding', $product->is_bidding) ? 'hidden' : '' }}">
 
             <div>
-                <label class="block font-semibold mb-1">Buy Now Price (₹)</label>
+                <label class="block font-semibold mb-1">{{ __('Buy Now Price (₹)') }}</label>
                 <input type="number" step="0.01" name="buy_now_price"
                     class="w-full border border-gray-300 rounded px-3 py-2"
                     value="{{ old('buy_now_price', $product->buy_now_price) }}">
             </div>
 
             <div>
-                <label class="block font-semibold mb-1">Bidding End Time</label>
+                <label class="block font-semibold mb-1">{{ __('Bidding End Time') }}</label>
                 <input type="datetime-local" name="bidding_end_time"
                     class="w-full border border-gray-300 rounded px-3 py-2"
                     value="{{ old('bidding_end_time', $product->bidding_end_time ? \Carbon\Carbon::parse($product->bidding_end_time)->format('Y-m-d\TH:i') : '') }}">
@@ -106,11 +106,11 @@
         <div class="text-center mt-4 flex gap-3 justify-center">
             <button type="submit"
                 class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition shadow">
-                Update Product
+                {{ __('Update Product') }}
             </button>
             <a href="{{ route('dashboard') }}"
                 class="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500 transition shadow">
-                Cancel
+                {{ __('Cancel') }}
             </a>
         </div>
 

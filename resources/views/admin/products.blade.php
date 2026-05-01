@@ -5,7 +5,7 @@
 <div class="max-w-7xl mx-auto px-6 py-6">
 
     <!-- 🧠 Header -->
-    <h2 class="text-2xl font-semibold mb-6">Admin Dashboard</h2>
+    <h2 class="text-2xl font-semibold mb-6">{{ __('Admin Dashboard') }}</h2>
 
     <!-- 📊 Modern Stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
@@ -13,7 +13,7 @@
         <a href="?status=" class="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition flex items-center gap-4">
             <div class="bg-blue-100 text-blue-600 p-3 rounded-full">📊</div>
             <div>
-                <p class="text-sm text-gray-500">Total</p>
+                <p class="text-sm text-gray-500">{{ __('Total') }}</p>
                 <h3 class="text-xl font-bold">{{ $totalProducts }}</h3>
             </div>
         </a>
@@ -21,7 +21,7 @@
         <a href="?status=pending" class="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition flex items-center gap-4">
             <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">⏳</div>
             <div>
-                <p class="text-sm text-gray-500">Pending</p>
+                <p class="text-sm text-gray-500">{{ __('Pending') }}</p>
                 <h3 class="text-xl font-bold">{{ $pendingCount }}</h3>
             </div>
         </a>
@@ -29,7 +29,7 @@
         <a href="?status=approved" class="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition flex items-center gap-4">
             <div class="bg-green-100 text-green-600 p-3 rounded-full">✅</div>
             <div>
-                <p class="text-sm text-gray-500">Approved</p>
+                <p class="text-sm text-gray-500">{{ __('Approved') }}</p>
                 <h3 class="text-xl font-bold">{{ $approvedCount }}</h3>
             </div>
         </a>
@@ -37,7 +37,7 @@
         <a href="?status=rejected" class="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition flex items-center gap-4">
             <div class="bg-red-100 text-red-600 p-3 rounded-full">❌</div>
             <div>
-                <p class="text-sm text-gray-500">Rejected</p>
+                <p class="text-sm text-gray-500">{{ __('Rejected') }}</p>
                 <h3 class="text-xl font-bold">{{ $rejectedCount }}</h3>
             </div>
         </a>
@@ -47,20 +47,20 @@
     <!-- 🔍 Search + Filter -->
     <form method="GET" class="flex flex-col md:flex-row gap-4 mb-6">
 
-        <input type="text" name="search" placeholder="Search product..."
+        <input type="text" name="search" placeholder="{{ __('Search product...') }}"
             value="{{ request('search') }}"
             class="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400 outline-none">
 
         <select name="status"
             class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400">
-            <option value="">All</option>
-            <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
-            <option value="approved" {{ request('status')=='approved'?'selected':'' }}>Approved</option>
-            <option value="rejected" {{ request('status')=='rejected'?'selected':'' }}>Rejected</option>
+            <option value="">{{ __('All') }}</option>
+            <option value="pending" {{ request('status')=='pending'?'selected':'' }}>{{ __('Pending') }}</option>
+            <option value="approved" {{ request('status')=='approved'?'selected':'' }}>{{ __('Approved') }}</option>
+            <option value="rejected" {{ request('status')=='rejected'?'selected':'' }}>{{ __('Rejected') }}</option>
         </select>
 
         <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
-            Filter
+            {{ __('Filter') }}
         </button>
 
     </form>
@@ -78,7 +78,7 @@
                     <img src="{{ asset('storage/'.$product->image) }}"
                          class="h-full w-full object-cover">
                 @else
-                    <span class="text-gray-400">No Image</span>
+                    <span class="text-gray-400">{{ __('No Image') }}</span>
                 @endif
             </div>
 
@@ -98,7 +98,7 @@
                 </p>
 
                 <p class="text-sm text-gray-600 mt-1">
-                    Farmer: {{ $product->user->name ?? '-' }}
+                    {{ __('Farmer:') }} {{ $product->user->name ?? '-' }}
                 </p>
 
                 <!-- 🏷️ Status -->
@@ -115,12 +115,12 @@
 
                     <button onclick="approve({{ $product->id }})"
                         class="w-1/2 bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
-                        Approve
+                        {{ __('Approve') }}
                     </button>
 
                     <button onclick="reject({{ $product->id }})"
                         class="w-1/2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
-                        Reject
+                        {{ __('Reject') }}
                     </button>
 
                 </div>
@@ -132,7 +132,7 @@
 
         @empty
             <p class="text-gray-500 col-span-3 text-center">
-                No products found.
+                {{ __('No products found.') }}
             </p>
         @endforelse
 

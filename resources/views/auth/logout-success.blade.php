@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Logged Out - Farmer Market</title>
+    <title>{{ __('Successfully Logged Out') }} - {{ __('Farmer Market') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -25,11 +25,11 @@
 
                 <!-- Message -->
                 <h2 class="text-3xl font-bold text-center text-gray-800 mb-3">
-                    Successfully Logged Out
+                    {{ __('Successfully Logged Out') }}
                 </h2>
 
                 <p class="text-center text-gray-600 mb-8 leading-relaxed">
-                    Your session has ended securely. All your data has been cleared and you have been logged out of all devices.
+                    {{ __('Your session has ended securely. All your data has been cleared and you have been logged out of all devices.') }}
                 </p>
 
                 <!-- Session Terminated Info -->
@@ -37,12 +37,12 @@
                     <div class="flex gap-3">
                         <span class="text-2xl">✓</span>
                         <div>
-                            <p class="font-semibold text-green-800 mb-2">Session Terminated</p>
+                            <p class="font-semibold text-green-800 mb-2">{{ __('Session Terminated') }}</p>
                             <ul class="text-sm text-green-700 space-y-1">
-                                <li>✓ All cookies cleared</li>
-                                <li>✓ Session data removed</li>
-                                <li>✓ CSRF tokens regenerated</li>
-                                <li>✓ You are now a guest</li>
+                                <li>✓ {{ __('All cookies cleared') }}</li>
+                                <li>✓ {{ __('Session data removed') }}</li>
+                                <li>✓ {{ __('CSRF tokens regenerated') }}</li>
+                                <li>✓ {{ __('You are now a guest') }}</li>
                             </ul>
                         </div>
                     </div>
@@ -54,27 +54,27 @@
                     <!-- Login Button -->
                     <a href="{{ route('login') }}"
                        class="px-4 py-3 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition duration-200 text-center transform hover:scale-105 shadow-lg">
-                        🔐 Log Back In
+                        🔐 {{ __('Log Back In') }}
                     </a>
 
                     <!-- Home Button -->
                     <a href="{{ route('products.index') }}"
                        class="px-4 py-3 rounded-lg border-2 border-green-300 text-green-700 font-semibold hover:bg-green-50 transition duration-200 text-center">
-                        🌾 Browse Products
+                        🌾 {{ __('Browse Products') }}
                     </a>
 
                 </div>
 
                 <!-- Footer -->
                 <p class="text-center text-xs text-gray-500 mt-8 border-t border-gray-200 pt-6">
-                    Thank you for using Farmer Market! 👋
+                    {{ __('Thank you for using Farmer Market! 👋') }}
                 </p>
 
             </div>
 
             <!-- Security Note -->
             <div class="mt-8 text-center text-sm text-gray-700 bg-white/50 backdrop-blur rounded-lg p-4">
-                <p>🔒 <span class="font-semibold">Security Tip:</span> Always logout when using shared devices.</p>
+                <p>🔒 <span class="font-semibold">{{ __('Security Tip:') }}</span> {{ __('Always logout when using shared devices.') }}</p>
             </div>
 
         </div>

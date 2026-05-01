@@ -44,9 +44,9 @@
             <x-input-label for="role" :value="__('Select Role')" />
 
             <select name="role" class="block mt-1 w-full border-gray-300 rounded">
-                <option value="farmer">Farmer</option>
-                <option value="consumer">Consumer</option>
-                <option value="admin">Admin</option>
+                <option value="farmer">{{ __('Farmer') }}</option>
+                <option value="consumer">{{ __('Consumer') }}</option>
+                <option value="admin">{{ __('Admin') }}</option>
             </select>
 
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
